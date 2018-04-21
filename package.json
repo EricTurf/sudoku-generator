@@ -1,0 +1,22 @@
+{
+  "name": "sudoku-generator",
+  "version": "1.0.0",
+  "description": "Generates easy,medium and hard sudokus",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "sudoku"
+  ],
+  "author": "ericTurf",
+  "license": "ISC",
+  "dependencies": {
+    "immutable": "^3.8.2",
+    "sudoku": "^0.0.2"
+  },
+  "devDependencies": {
+    "jest": "^22.4.3"
+  }
+}
