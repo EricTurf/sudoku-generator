@@ -8,99 +8,55 @@ const DIFFICULTIES = {
   MEDIUM: 'MEDIUM',
   HARD: 'HARD'
 };
-
-const RANGES = {
-  EASY: [45, 55],
-  MEDIUM: [30, 40],
-  HARD: [20, 25]
+const DIFF_FORMATTER = {
+  EASY: () => Math.floor(Math.random() * 5) <= 1,
+  MEDIUM: () => Math.floor(Math.random() * 15) <= 2,
+  HARD: () => Math.floor(Math.random() * 40) <= 2
 };
 
 const getInitalValues = board => {
   let initialValues = 0;
 
-  board.forEach(r => {
-    r.forEach(v => {
-      if (v.value !== null) initialValues++;
-    });
-  });
+  board.forEach(x => x !== null && initialValues++);
+
   return initialValues;
 };
 
-const validateBoard = (difficulty, board) => {
-  const [s, e] = RANGES[difficulty];
-  const initialValues = getInitalValues(board);
-  console.log('here');
+const addAnswers = (difficulty, board, answerBoard) => {
+  return board.map((v, index) => {
+    if (DIFF_FORMATTER[difficulty]()) {
+      v = difficulty === DIFFICULTIES.HARD ? null : answerBoard[index];
+    }
 
-  return initialValues >= s && initialValues <= e;
-};
-
-const fixBoard = (difficulty, board) => {
-  const values = getInitalValues(board);
-  const [min, max] = RANGES[difficulty];
-  let removedValues = 0;
-  const valuesToRemove =
-    values - Math.floor(Math.random() * (max - min + 1) + min);
-
-  const removeValues = board => {
-    return board.map(row => {
-      return row.map(v => {
-        const random = Math.floor(Math.random() * 10);
-        if (random > 7 && removedValues <= valuesToRemove) {
-          v.value = null;
-          ++removedValues;
-        }
-        return v;
-      });
-    });
-  };
-
-  let newBoard = board;
-
-  while (!validateBoard(difficulty, newBoard)) {
-    console.log('while');
-    newBoard = removeValues(newBoard.length === 0 ? board : newBoard);
-  }
-
-  return newBoard;
+    return v;
+  });
 };
 
 const getBoard = difficulty => {
   let arr = [];
   const x = makepuzzle();
   const y = solvepuzzle(x);
-  const RANDOM = {
-    EASY: 6,
-    MEDIUM: 5,
-    HARD: 2
-  };
+
+  const initialAnswers = addAnswers(difficulty, x, y);
+
   const board = y.reduce((acc, j, i) => {
-    const formatValue = v => {
-      const random = Math.floor(Math.random() * 10);
-
-      return {
-        answer: v + 1,
-        value: random > RANDOM[difficulty] ? null : v + 1
-      };
-
-      // return random > RANDOM[difficulty] ? null : v + 1;
-    };
+    const formatValue = v => (v === null ? null : v + 1);
     if (arr.length === 8) {
-      const y = [...arr, formatValue(j)];
+      const y = [
+        ...arr,
+        { answer: formatValue(j), value: formatValue(initialAnswers[i]) }
+      ];
       arr = [];
       return acc.push(y);
     } else {
-      arr = [...arr, formatValue(j)];
+      arr = [
+        ...arr,
+        { answer: formatValue(j), value: formatValue(initialAnswers[i]) }
+      ];
       return acc;
     }
   }, new List());
-
-  console.log(board.toJS());
-
-  if (validateBoard(difficulty, board)) {
-    return board;
-  } else {
-    return fixBoard(difficulty, board);
-  }
+  return board;
 };
 
 const easy = () => {
@@ -110,7 +66,7 @@ const medium = () => {
   return getBoard(DIFFICULTIES.MEDIUM);
 };
 const hard = () => {
-  return [];
+  return getBoard(DIFFICULTIES.HARD);
 };
 
 const Sudoku = {
