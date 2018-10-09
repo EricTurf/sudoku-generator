@@ -110,7 +110,7 @@ const medium = () => {
   return getBoard(DIFFICULTIES.MEDIUM);
 };
 const hard = () => {
-  return [];
+  return getBoard(DIFFICULTIES.HARD);
 };
 
 const Sudoku = {
