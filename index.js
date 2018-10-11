@@ -32,7 +32,7 @@ const addAnswers = (difficulty, board, answerBoard) => {
   });
 };
 
-const getBoard = difficulty => {
+module.exports = difficulty => {
   let arr = [];
   const x = makepuzzle();
   const y = solvepuzzle(x);
@@ -59,19 +59,3 @@ const getBoard = difficulty => {
   return board;
 };
 
-const easy = () => {
-  return getBoard(DIFFICULTIES.EASY);
-};
-const medium = () => {
-  return getBoard(DIFFICULTIES.MEDIUM);
-};
-const hard = () => {
-  return getBoard(DIFFICULTIES.HARD);
-};
-
-const Sudoku = {
-  easy,
-  medium,
-  hard
-};
-module.exports = Sudoku;

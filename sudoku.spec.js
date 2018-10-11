@@ -14,26 +14,13 @@ describe('sudoku-generator', () => {
   };
 
   describe('default', () => {
-    it('should be an object with easy,medium and hard functions', () => {
-      expect(Sudoku).toBeInstanceOf(Object);
-      Object.values(Sudoku).forEach(key =>
-        expect(key).toBeInstanceOf(Function)
-      );
-    });
-
-    it('should be an object of functions that returns an array of objects of value and answer', () => {
-      Object.values(Sudoku).forEach(fn => {
-        const result = fn();
-
-        result.forEach(r =>
-          expect(r.objectContaining({ value, object })).toBeTruthy()
-        );
-      });
+    it('should be a function', () => {
+      expect(Sudoku).toBeInstanceOf(Function);
     });
   });
   describe('easy', () => {
     it('should return an array containing with at least 45 and maximum 55 object with value not being null ', () => {
-      const result = Sudoku.easy();
+      const result = Sudoku('EASY');
 
       const initialValues = getInitialValuesCount(result);
 
@@ -43,7 +30,7 @@ describe('sudoku-generator', () => {
   });
   describe('medium', () => {
     it('should return an array containing with at least 30 and maximum 40 object with value not being null ', () => {
-      const result = Sudoku.medium();
+      const result = Sudoku('MEDIUM');
 
       const initialValues = getInitialValuesCount(result);
 
@@ -53,7 +40,7 @@ describe('sudoku-generator', () => {
   });
   fdescribe('hard', () => {
     it('should return an array containing with at least 20 and maximum 30 object with value not being null ', () => {
-      const result = Sudoku.hard();
+      const result = Sudoku('HARD');
 
       const initialValues = getInitialValuesCount(result);
 
